@@ -19,7 +19,7 @@ public class MainTest {
         return conn;
     }
 
-    public void endConnection (Connection conn) throws SQLException {
+    public void endConnection(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("DROP TABLE users");
         stmt.execute("DROP TABLE messages");
@@ -27,12 +27,23 @@ public class MainTest {
     }
 
     @Test
-    public void testUser () throws SQLException {
+    public void testUser() throws SQLException {
         Connection conn = startConnection();
         Main.insertUser(conn, "Alice", "");
         User user = Main.selectUser(conn, "Alice");
         endConnection(conn);
 
         assertTrue(user != null);
+    }
+
+    @Test
+    public void testMessage() throws SQLException {
+        Connection conn = startConnection();
+        Main.insertUser(conn, "Alice", "");
+        Main.insertMessage(conn, 1, -1, "Hello, world!");
+        Message message = Main.selectMessage(conn, 1);
+        endConnection(conn);
+
+        assertTrue(message != null);
     }
 }
